@@ -10,5 +10,5 @@ import com.activeandroid.annotation.Table;
 public class Group {
 
     @Column
-    public String groupname;
+    public String groupname ="";
 }

@@ -21,7 +21,7 @@ public class Notification extends Model {
     @Column
     public Date received;
     @Column
-    public int priority;
+    public int priority = 0;
     @Column
-    public Group group;
+    public Group group = new Group();
 }
