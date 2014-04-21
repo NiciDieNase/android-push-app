@@ -5,10 +5,10 @@
         android:title="@string/api_settings">
         <EditTextPreference
             android:key="username"
-            android:title="@string/username" />
+            android:title="@string/username"/>
         <EditTextPreference
             android:key="api_key"
-            android:title="@string/api_key" />
+            android:title="@string/api_key"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/notification_settings">

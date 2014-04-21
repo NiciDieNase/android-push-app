@@ -12,5 +12,8 @@
     <string name="play_sound">Play Sound</string>
     <string name="notify">Notify</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="date">Date</string>
 
 </resources>
