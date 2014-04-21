@@ -1,6 +1,9 @@
 package de.nicidienase.push.pushclient;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -16,6 +19,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+        ListFragment listFragment = new ListFragment();
+        listFragment.setListAdapter(new NotificationAdapter(this));
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragmentcontainer, listFragment)
+                .commit();
     }
 
     @Override
