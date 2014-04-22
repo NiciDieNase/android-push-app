@@ -15,5 +15,6 @@
     <string name="title">Title</string>
     <string name="message">Message</string>
     <string name="date">Date</string>
+    <string name="add_items">Add Items</string>
 
 </resources>
