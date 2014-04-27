@@ -40,7 +40,7 @@ public class NotificationAdapter extends BaseAdapter{
 			protected Object doInBackground(Object[] params) {
 				notifications = new Select()
 						.from(Notification.class)
-						.orderBy("received DSC")
+						.orderBy("received DESC")
 						.execute();
 			return params[0];
 			}
