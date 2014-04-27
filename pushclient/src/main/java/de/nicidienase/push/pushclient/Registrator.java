@@ -27,40 +27,40 @@ public class Registrator {
 	private static final String LOG_TAG = "Registrator";
 	Context context;
 
-	Registrator(Context context){
+	Registrator(Context context) {
 		this.context = context;
 	}
 
-	boolean register(String username, String dev_id, String reg_id){
+	boolean register(String username, String dev_id, String reg_id) {
 		JSONObject params = new JSONObject();
 
 		try {
-			params.put("reg_id",reg_id);
-			params.put("api_key","");
+			params.put("reg_id", reg_id);
+			params.put("api_key", "");
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());
 		}
 
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String serverUrl = prefs.getString(context.getString(R.string.setting_key_server_url),"");
+		String serverUrl = prefs.getString(context.getString(R.string.setting_key_server_url), "");
 
-		return this.sendRequest(params,username, dev_id,serverUrl + "register/");
+		return this.sendRequest(params, username, dev_id, serverUrl + "register/");
 	}
 
-	boolean unregister(String username, String dev_id){
+	boolean unregister(String username, String dev_id) {
 		JSONObject params = new JSONObject();
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String serverUrl = prefs.getString(context.getString(R.string.server_url),"");
+		String serverUrl = prefs.getString(context.getString(R.string.server_url), "");
 
-		return this.sendRequest(params,username, dev_id, serverUrl + "unregister/");
+		return this.sendRequest(params, username, dev_id, serverUrl + "unregister/");
 	}
 
-	private boolean sendRequest(JSONObject parameters, String username, String dev_id, String url){
+	private boolean sendRequest(JSONObject parameters, String username, String dev_id, String url) {
 		try {
-			parameters.put("username",username);
-			parameters.put("dev_id",dev_id);
+			parameters.put("username", username);
+			parameters.put("dev_id", dev_id);
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());
 		}
@@ -88,7 +88,7 @@ public class Registrator {
 
 			return responseCode == HttpStatus.SC_OK;
 
-		} catch (ClientProtocolException e)  {
+		} catch (ClientProtocolException e) {
 			client.getConnectionManager().shutdown();
 			Log.e(LOG_TAG, "ClientProtocolException: " + e);
 		} catch (IOException e) {

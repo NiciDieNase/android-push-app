@@ -60,14 +60,14 @@ public class MainActivity extends Activity {
 
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String server = prefs.getString(context.getString(R.string.setting_key_server_url),"");
-		if(server.equals("")){
+		String server = prefs.getString(context.getString(R.string.setting_key_server_url), "");
+		if (server.equals("")) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			Toast.makeText(context, "Server not set", Toast.LENGTH_SHORT);
 			startActivityForResult(i, 1);
 		}
 
-		if(checkPlayServices()){
+		if (checkPlayServices()) {
 			gcm = GoogleCloudMessaging.getInstance(this);
 			regid = getRegistrationId(context);
 
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 				notificationAdapter.notifyDataSetChanged();
 				break;
 			case R.id.action_reregister:
-				if (regid.isEmpty()){
+				if (regid.isEmpty()) {
 					this.registerInBackground();
 				} else {
 					this.sendRegistrationIdToBackend();
@@ -142,11 +142,11 @@ public class MainActivity extends Activity {
 
 	/**
 	 * Gets the current registration ID for application on GCM service.
-	 * <p>
+	 * <p/>
 	 * If result is empty, the app needs to register.
 	 *
 	 * @return registration ID, or empty string if there is no existing
-	 *         registration ID.
+	 * registration ID.
 	 */
 	private String getRegistrationId(Context context) {
 		final SharedPreferences prefs = getGCMPreferences(context);
@@ -167,17 +167,17 @@ public class MainActivity extends Activity {
 				Context.MODE_PRIVATE);
 	}
 
-	private void registerInBackground(){
-		new AsyncTask(){
+	private void registerInBackground() {
+		new AsyncTask() {
 			@Override
 			protected Object doInBackground(Object[] params) {
 				String msg = "";
-				try{
-					if(gcm == null){
+				try {
+					if (gcm == null) {
 						gcm = GoogleCloudMessaging.getInstance(context);
 					}
 					regid = gcm.register(SENDER_ID);
-					storeRegistrationId(context,regid);
+					storeRegistrationId(context, regid);
 					sendRegistrationIdToBackend();
 				} catch (IOException e) {
 					msg = "Error: " + e.getMessage();
@@ -188,31 +188,31 @@ public class MainActivity extends Activity {
 	}
 
 	private void sendRegistrationIdToBackend() {
-		new AsyncTask(){
+		new AsyncTask() {
 
 			@Override
 			protected Object doInBackground(Object[] params) {
-				Log.d(TAG,"Register RegId = " + regid);
+				Log.d(TAG, "Register RegId = " + regid);
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-				String username = preferences.getString(getString(R.string.setting_key_username),"");
+				String username = preferences.getString(getString(R.string.setting_key_username), "");
 				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-				return new Registrator(context).register(username,devId,regid);
+				return new Registrator(context).register(username, devId, regid);
 			}
 		}.execute();
 	}
 
-	private void unregisterAtBackend(){
-		new AsyncTask(){
+	private void unregisterAtBackend() {
+		new AsyncTask() {
 
 			@Override
 			protected Object doInBackground(Object[] params) {
-			Log.d(TAG,"Unregister RegId = " + regid);
-			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-			String username = preferences.getString(getString(R.string.setting_key_username),"");
-			String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+				Log.d(TAG, "Unregister RegId = " + regid);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+				String username = preferences.getString(getString(R.string.setting_key_username), "");
+				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-			return new Registrator(context).unregister(username,devId);
+				return new Registrator(context).unregister(username, devId);
 			}
 		}.execute();
 	}
@@ -222,7 +222,7 @@ public class MainActivity extends Activity {
 	 * {@code SharedPreferences}.
 	 *
 	 * @param context application's context.
-	 * @param regId registration ID
+	 * @param regId   registration ID
 	 */
 	private void storeRegistrationId(Context context, String regId) {
 		final SharedPreferences prefs = getGCMPreferences(context);

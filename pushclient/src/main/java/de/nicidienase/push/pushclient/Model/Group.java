@@ -9,6 +9,6 @@ import com.activeandroid.annotation.Table;
 @Table(name = "groups")
 public class Group {
 
-    @Column
-    public String groupname ="";
+	@Column
+	public String groupname = "";
 }

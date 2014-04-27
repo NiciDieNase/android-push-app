@@ -12,16 +12,16 @@ import java.util.Date;
 @Table(name = "notifications")
 public class Notification extends Model {
 
-    @Column
-    public String title;
-    @Column
-    public String message;
-    @Column
-    public String long_message;
-    @Column
-    public Date received = new Date();
-    @Column
-    public int priority = 0;
-    @Column
-    public Group group = new Group();
+	@Column
+	public String title;
+	@Column
+	public String message;
+	@Column
+	public String long_message;
+	@Column
+	public Date received = new Date();
+	@Column
+	public int priority = 0;
+	@Column
+	public Group group = new Group();
 }

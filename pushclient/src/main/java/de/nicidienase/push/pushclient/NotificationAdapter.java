@@ -18,12 +18,12 @@ import de.nicidienase.push.pushclient.Model.Notification;
 /**
  * Created by felix on 21.04.14.
  */
-public class NotificationAdapter extends BaseAdapter{
+public class NotificationAdapter extends BaseAdapter {
 
 	List<Notification> notifications = new ArrayList<Notification>();
 	private Context mContext;
 
-	NotificationAdapter(Context context){
+	NotificationAdapter(Context context) {
 		mContext = context;
 		updateNotifications();
 	}
@@ -35,14 +35,14 @@ public class NotificationAdapter extends BaseAdapter{
 	}
 
 	private void updateNotifications() {
-		new AsyncTask(){
+		new AsyncTask() {
 			@Override
 			protected Object doInBackground(Object[] params) {
 				notifications = new Select()
 						.from(Notification.class)
 						.orderBy("received DESC")
 						.execute();
-			return params[0];
+				return params[0];
 			}
 
 			@Override
@@ -50,7 +50,7 @@ public class NotificationAdapter extends BaseAdapter{
 				((NotificationAdapter) o).notifyDataSetChanged();
 			}
 		}.execute(this);
-}
+	}
 
 	@Override
 	public int getCount() {
@@ -73,7 +73,7 @@ public class NotificationAdapter extends BaseAdapter{
 		TextView title;
 		TextView message;
 		TextView date;
-		if(convertView == null){
+		if (convertView == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.notification_list_item, null);
 		}
@@ -85,6 +85,6 @@ public class NotificationAdapter extends BaseAdapter{
 		message.setText(notifications.get(position).message);
 		date.setText(notifications.get(position).received.toString());
 
-	return convertView;
+		return convertView;
 	}
 }
