@@ -1,6 +1,7 @@
 package de.nicidienase.push.pushclient;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.nicidienase.push.pushclient.Model.Notification;
@@ -29,15 +29,21 @@ public class NotificationAdapter extends BaseAdapter{
 	}
 
 	private void updateNotifications() {
-		new Thread(new Runnable() {
+		new AsyncTask(){
 			@Override
-			public void run() {
+			protected Object doInBackground(Object[] params) {
 				notifications = new Select()
 						.from(Notification.class)
 						.orderBy("received ASC")
 						.execute();
+			return params[0];
 			}
-		}).start();
+
+			@Override
+			protected void onPostExecute(Object o) {
+				((NotificationAdapter) o).notifyDataSetChanged();
+			}
+		}.execute(this);
 }
 
 	@Override

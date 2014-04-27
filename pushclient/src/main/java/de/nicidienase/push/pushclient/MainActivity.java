@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.activeandroid.query.Delete;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -35,8 +36,9 @@ public class MainActivity extends Activity {
 	private static final String SENDER_ID = "160575761640";
 
 	private Context context = null;
-	GoogleCloudMessaging gcm;
+	private GoogleCloudMessaging gcm;
 	protected String regid;
+	private NotificationAdapter notificationAdapter;
 
 
 	@Override
@@ -46,19 +48,19 @@ public class MainActivity extends Activity {
 
 		context = getApplicationContext();
 
-		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
 		ListFragment listFragment = new ListFragment();
 
-		NotificationAdapter notificationAdapter = new NotificationAdapter(this);
+		notificationAdapter = new NotificationAdapter(this);
 
 		listFragment.setListAdapter(notificationAdapter);
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentcontainer, listFragment)
 				.commit();
 
+		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String server = prefs.getString(context.getString(R.string.server_url_setting_key),"");
+		String server = prefs.getString(context.getString(R.string.setting_key_server_url),"");
 		if(server.equals("")){
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			Toast.makeText(context, "Server not set", Toast.LENGTH_SHORT);
@@ -91,19 +93,29 @@ public class MainActivity extends Activity {
 				Intent j = new Intent(getApplicationContext(), SettingsActivity.class);
 				startActivity(j);
 				break;
-			case R.id.action_add_items:
+			case R.id.action_add_item:
 				Notification n = new Notification();
 				SecureRandom random = new SecureRandom();
 				n.title = "Title" + random.nextInt();
 				n.message = String.valueOf(random.nextLong());
 				n.received = new Date();
 				n.save();
+				notificationAdapter.notifyDataSetChanged();
+				break;
 			case R.id.action_reregister:
 				if (regid.isEmpty()){
 					this.registerInBackground();
 				} else {
 					this.sendRegistrationIdToBackend();
 				}
+				break;
+			case R.id.action_clear:
+				new Delete().from(Notification.class).execute();
+				notificationAdapter.notifyDataSetChanged();
+				break;
+			case R.id.action_update:
+				notificationAdapter.notifyDataSetChanged();
+				break;
 			default:
 				break;
 		}
@@ -154,7 +166,6 @@ public class MainActivity extends Activity {
 
 	private void registerInBackground(){
 		new AsyncTask(){
-
 			@Override
 			protected Object doInBackground(Object[] params) {
 				String msg = "";
@@ -170,11 +181,6 @@ public class MainActivity extends Activity {
 				}
 				return msg;
 			}
-
-			@Override
-			protected void onPostExecute(Object o) {
-				super.onPostExecute(o);
-			}
 		}.execute();
 	}
 
@@ -185,7 +191,7 @@ public class MainActivity extends Activity {
 			protected Object doInBackground(Object[] params) {
 				Log.d(TAG,"Should register RegId = " + regid);
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-				String username = preferences.getString(getString(R.string.username_setting_key),"");
+				String username = preferences.getString(getString(R.string.setting_key_username),"");
 				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 				return new Registrator(context).register(username,devId,regid);

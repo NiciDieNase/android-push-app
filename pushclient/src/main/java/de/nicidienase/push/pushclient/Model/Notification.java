@@ -19,7 +19,7 @@ public class Notification extends Model {
     @Column
     public String long_message;
     @Column
-    public Date received;
+    public Date received = new Date();
     @Column
     public int priority = 0;
     @Column

@@ -13,7 +13,7 @@
         android:icon="@android:drawable/ic_menu_preferences"/>
 
     <item
-        android:id="@+id/action_add_items"
+        android:id="@+id/action_add_item"
         android:showAsAction="ifRoom"
         android:title="@string/add_items"
         android:icon="@android:drawable/ic_menu_add"/>
@@ -22,5 +22,11 @@
         android:id="@+id/action_reregister"
         android:showAsAction="ifRoom"
         android:title="@string/reregister"/>
+
+    <item
+        android:id="@+id/action_clear"
+        android:showAsAction="ifRoom"
+        android:title="@string/clear_list"
+        android:icon="@android:drawable/ic_menu_delete"/>
 
 </menu>

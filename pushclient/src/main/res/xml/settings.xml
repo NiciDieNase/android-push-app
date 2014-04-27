@@ -2,31 +2,31 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/api_settings">
+        android:title="@string/settings_api">
         <EditTextPreference
-            android:key="@string/username_setting_key"
+            android:key="@string/setting_key_username"
             android:title="@string/username"/>
         <EditTextPreference
-            android:key="@string/server_url_setting_key"
+            android:key="@string/setting_key_server_url"
             android:title="@string/server_url"/>
         <EditTextPreference
-            android:key="@string/api_key_setting_key"
+            android:key="@string/setting_key_api_key"
             android:title="@string/api_key"/>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/notification_settings">
+        android:title="@string/settings_notification">
         <CheckBoxPreference
-            android:key="notify"
+            android:key="@string/setting_key_notify"
             android:title="@string/notify"
             android:defaultValue="true"
             android:disableDependentsState="false"/>
         <CheckBoxPreference
-            android:key="play_sound"
+            android:key="@string/setting_key_sound"
             android:title="@string/play_sound"
             android:defaultValue="true"
             android:dependency="notify"/>
         <CheckBoxPreference
-            android:key="vibrate"
+            android:key="@string/setting_key_vibrate"
             android:title="@string/vibrate"
             android:defaultValue="true"
             android:dependency="notify"/>
