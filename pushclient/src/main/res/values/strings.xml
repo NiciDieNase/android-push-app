@@ -16,5 +16,10 @@
     <string name="message">Message</string>
     <string name="date">Date</string>
     <string name="add_items">Add Items</string>
+    <string name="server_url">Server-URL</string>
+    <string name="server_url_setting_key">server_url</string>
+    <string name="username_setting_key">username</string>
+    <string name="api_key_setting_key">api_key</string>
+    <string name="default_server_url">http://nicidienase.de:4443/</string>
 
 </resources>

@@ -4,10 +4,13 @@
     <PreferenceCategory
         android:title="@string/api_settings">
         <EditTextPreference
-            android:key="username"
+            android:key="@string/username_setting_key"
             android:title="@string/username"/>
         <EditTextPreference
-            android:key="api_key"
+            android:key="@string/server_url_setting_key"
+            android:title="@string/server_url"/>
+        <EditTextPreference
+            android:key="@string/api_key_setting_key"
             android:title="@string/api_key"/>
     </PreferenceCategory>
     <PreferenceCategory

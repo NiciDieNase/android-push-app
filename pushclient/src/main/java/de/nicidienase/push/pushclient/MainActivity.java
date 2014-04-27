@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +27,7 @@ import de.nicidienase.push.pushclient.Model.Notification;
 public class MainActivity extends Activity {
 
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-	public static final String PROPERTY_REG_ID = "registration_id";
+	public static final String PROPERTY_REG_ID = "reg_id";
 	private static final String TAG = "PushClient";
 	private static final String PROPERTY_APP_VERSION = "0.1";
 	private static final String SENDER_ID = "160575761640";
@@ -41,6 +42,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		context = getApplicationContext();
 
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
@@ -163,7 +166,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void sendRegistrationIdToBackend() {
-		// TODO Your implementation here.
+		Log.d(TAG,"Should register RegId = " + regId);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String username = preferences.getString(getString(R.string.username_setting_key),"");
+		String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+		new Registrator(context).register(username,devId,regId);
 	}
 
 	/**
