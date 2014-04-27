@@ -36,6 +36,7 @@ public class Registrator {
 
 		try {
 			params.put("reg_id",reg_id);
+			params.put("api_key","");
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());
 		}

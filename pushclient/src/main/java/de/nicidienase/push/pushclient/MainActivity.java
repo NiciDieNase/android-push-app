@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -54,6 +55,16 @@ public class MainActivity extends Activity {
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentcontainer, listFragment)
 				.commit();
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String server = prefs.getString(context.getString(R.string.server_url_setting_key),"");
+		if(server.equals("")){
+			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+			Toast t = new Toast(getApplicationContext());
+			t.setDuration(Toast.LENGTH_SHORT);
+			t.setText("Server not set");
+			startActivityForResult(i, 1);
+		}
 
 		if(checkPlayServices()){
 			gcm = GoogleCloudMessaging.getInstance(this);
