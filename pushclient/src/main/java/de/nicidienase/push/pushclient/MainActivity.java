@@ -22,7 +22,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
@@ -95,9 +94,8 @@ public class MainActivity extends Activity {
 				break;
 			case R.id.action_add_item:
 				Notification n = new Notification();
-				SecureRandom random = new SecureRandom();
-				n.title = "Title" + random.nextInt();
-				n.message = String.valueOf(random.nextLong());
+				n.title = "Bacon Ipsum";
+				n.message = getString(R.string.bacon_ipsum);
 				n.received = new Date();
 				n.save();
 				notificationAdapter.notifyDataSetChanged();
