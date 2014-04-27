@@ -25,5 +25,6 @@
     <string name="setting_key_notify">notify</string>
     <string name="setting_key_sound">play_sound</string>
     <string name="setting_key_vibrate">vibrate</string>
+    <string name="unregister">Unregister</string>
 
 </resources>

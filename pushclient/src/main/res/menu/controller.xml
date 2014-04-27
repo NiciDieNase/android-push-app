@@ -29,4 +29,8 @@
         android:title="@string/clear_list"
         android:icon="@android:drawable/ic_menu_delete"/>
 
+    <item
+        android:id="@+id/action_unregister"
+        android:title="@string/unregister"/>
+
 </menu>

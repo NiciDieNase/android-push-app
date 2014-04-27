@@ -109,6 +109,9 @@ public class MainActivity extends Activity {
 					this.sendRegistrationIdToBackend();
 				}
 				break;
+			case R.id.action_unregister:
+				this.unregisterAtBackend();
+				break;
 			case R.id.action_clear:
 				new Delete().from(Notification.class).execute();
 				notificationAdapter.notifyDataSetChanged();
@@ -189,12 +192,27 @@ public class MainActivity extends Activity {
 
 			@Override
 			protected Object doInBackground(Object[] params) {
-				Log.d(TAG,"Should register RegId = " + regid);
+				Log.d(TAG,"Register RegId = " + regid);
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 				String username = preferences.getString(getString(R.string.setting_key_username),"");
 				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 				return new Registrator(context).register(username,devId,regid);
+			}
+		}.execute();
+	}
+
+	private void unregisterAtBackend(){
+		new AsyncTask(){
+
+			@Override
+			protected Object doInBackground(Object[] params) {
+			Log.d(TAG,"Unregister RegId = " + regid);
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+			String username = preferences.getString(getString(R.string.setting_key_username),"");
+			String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+			return new Registrator(context).unregister(username,devId);
 			}
 		}.execute();
 	}

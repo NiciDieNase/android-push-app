@@ -36,10 +36,10 @@ public class GcmIntentService extends IntentService {
 			} else if(GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)){
 				Log.d("Message_type_deleted");
 			} else if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)){
-				String msg = intent.getExtras().getString( "msg" ,"");
-				String title = intent.getExtras().getString( "title" ,"");
-				String long_msg = intent.getExtras().getString("long_msg" ,"");
-				int priority = intent.getExtras().getInt("priority", 0);
+				String msg = extras.getString( "msg" ,"");
+				String title = extras.getString( "title" ,"");
+				String long_msg = extras.getString("long_msg" ,"");
+				int priority = extras.getInt("priority", 0);
 
 				if(!("".equals(title) && "".equals(msg) )){
 					de.nicidienase.push.pushclient.Model.Notification notification = new de.nicidienase.push.pushclient.Model.Notification();
@@ -75,5 +75,6 @@ public class GcmIntentService extends IntentService {
 				}
 			}
 		}
+		GcmBroadcastReveiver.completeWakefulIntent(intent);
 	}
 }

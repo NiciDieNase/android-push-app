@@ -28,13 +28,19 @@ public class NotificationAdapter extends BaseAdapter{
 		updateNotifications();
 	}
 
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		updateNotifications();
+	}
+
 	private void updateNotifications() {
 		new AsyncTask(){
 			@Override
 			protected Object doInBackground(Object[] params) {
 				notifications = new Select()
 						.from(Notification.class)
-						.orderBy("received ASC")
+						.orderBy("received DSC")
 						.execute();
 			return params[0];
 			}
@@ -48,25 +54,22 @@ public class NotificationAdapter extends BaseAdapter{
 
 	@Override
 	public int getCount() {
-		this.updateNotifications();
 		return notifications.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		this.updateNotifications();
 		return notifications.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		this.updateNotifications();
 		return notifications.get(position).getId();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		this.updateNotifications();
+//		this.updateNotifications();
 		TextView title;
 		TextView message;
 		TextView date;
