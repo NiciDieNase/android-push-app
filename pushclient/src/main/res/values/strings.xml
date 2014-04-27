@@ -26,5 +26,7 @@
     <string name="setting_key_sound">play_sound</string>
     <string name="setting_key_vibrate">vibrate</string>
     <string name="unregister">Unregister</string>
+    <string name="bacon_ipsum">Bacon ipsum dolor sit amet pork loin doner salami, venison tri-tip shank jowl spare ribs brisket jerky short ribs meatball pig. T-bone cow jowl strip steak swine tail pork chop turducken pig spare ribs shankle boudin shoulder. Fatback t-bone ham hock doner turkey hamburger spare ribs leberkas beef jowl pork chop ball tip strip steak ham swine. Strip steak venison shoulder frankfurter swine. Ground round chicken jowl ribeye chuck, leberkas pork kevin pastrami rump jerky capicola. Beef ribs chicken strip steak, sirloin tongue salami rump cow venison hamburger t-bone chuck ribeye. Corned beef swine tenderloin, spare ribs chicken strip steak biltong.</string>
+    <string name="example_date">Mo 28. Apr 00:20:32 CEST 2014</string>
 
 </resources>
