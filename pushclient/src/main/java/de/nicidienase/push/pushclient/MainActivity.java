@@ -32,10 +32,9 @@ public class MainActivity extends Activity {
 	private static final String PROPERTY_APP_VERSION = "0.1";
 	private static final String SENDER_ID = "160575761640";
 
-	protected String regId;
 	private Context context = null;
 	GoogleCloudMessaging gcm;
-	private String regid;
+	protected String regid;
 
 
 	@Override
@@ -90,7 +89,12 @@ public class MainActivity extends Activity {
 					n.received = new Date();
 					n.save();
 				}
-
+			case R.id.action_reregister:
+				if (regid.isEmpty()){
+					this.registerInBackground();
+				} else {
+					this.sendRegistrationIdToBackend();
+				}
 			default:
 				break;
 		}
@@ -149,8 +153,8 @@ public class MainActivity extends Activity {
 					if(gcm == null){
 						gcm = GoogleCloudMessaging.getInstance(context);
 					}
-					regId = gcm.register(SENDER_ID);
-					storeRegistrationId(context,regId);
+					regid = gcm.register(SENDER_ID);
+					storeRegistrationId(context,regid);
 					sendRegistrationIdToBackend();
 				} catch (IOException e) {
 					msg = "Error: " + e.getMessage();
@@ -166,12 +170,18 @@ public class MainActivity extends Activity {
 	}
 
 	private void sendRegistrationIdToBackend() {
-		Log.d(TAG,"Should register RegId = " + regId);
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String username = preferences.getString(getString(R.string.username_setting_key),"");
-		String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		new AsyncTask(){
 
-		new Registrator(context).register(username,devId,regId);
+			@Override
+			protected Object doInBackground(Object[] params) {
+				Log.d(TAG,"Should register RegId = " + regid);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+				String username = preferences.getString(getString(R.string.username_setting_key),"");
+				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+				return new Registrator(context).register(username,devId,regid);
+			}
+		}.execute();
 	}
 
 	/**

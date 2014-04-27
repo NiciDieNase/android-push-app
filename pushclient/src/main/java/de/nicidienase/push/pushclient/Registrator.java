@@ -42,7 +42,7 @@ public class Registrator {
 
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String serverUrl = prefs.getString(context.getString(R.string.server_url),"");
+		String serverUrl = prefs.getString(context.getString(R.string.server_url_setting_key),"");
 
 		return this.sendRequest(params,username, dev_id,serverUrl + "register/");
 	}
