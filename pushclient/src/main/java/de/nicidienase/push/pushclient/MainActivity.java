@@ -21,6 +21,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
@@ -60,9 +61,7 @@ public class MainActivity extends Activity {
 		String server = prefs.getString(context.getString(R.string.server_url_setting_key),"");
 		if(server.equals("")){
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-			Toast t = new Toast(getApplicationContext());
-			t.setDuration(Toast.LENGTH_SHORT);
-			t.setText("Server not set");
+			Toast.makeText(context, "Server not set", Toast.LENGTH_SHORT);
 			startActivityForResult(i, 1);
 		}
 
@@ -93,13 +92,12 @@ public class MainActivity extends Activity {
 				startActivity(j);
 				break;
 			case R.id.action_add_items:
-				for(int i = 0; i<10;i++){
-					Notification n = new Notification();
-					n.title = "Title " + i;
-					n.message = "Message " + i;
-					n.received = new Date();
-					n.save();
-				}
+				Notification n = new Notification();
+				SecureRandom random = new SecureRandom();
+				n.title = "Title" + random.nextInt();
+				n.message = String.valueOf(random.nextLong());
+				n.received = new Date();
+				n.save();
 			case R.id.action_reregister:
 				if (regid.isEmpty()){
 					this.registerInBackground();

@@ -1,15 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_update"
+        android:showAsAction="always"
+        android:title="@string/refresh"
+        android:icon="@android:drawable/ic_popup_sync"/>
+
+    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/action_settings" />
-	
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"/>
+
     <item
         android:id="@+id/action_add_items"
         android:showAsAction="ifRoom"
-        android:title="@string/add_items"/>
+        android:title="@string/add_items"
+        android:icon="@android:drawable/ic_menu_add"/>
 
     <item
         android:id="@+id/action_reregister"

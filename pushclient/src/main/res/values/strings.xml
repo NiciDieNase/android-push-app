@@ -22,5 +22,6 @@
     <string name="api_key_setting_key">api_key</string>
     <string name="default_server_url">http://nicidienase.de:4443/</string>
     <string name="reregister">Re-Register</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
