@@ -31,12 +31,12 @@ public class Registrator {
 		this.context = context;
 	}
 
-	boolean register(String username, String dev_id, String reg_id) {
+	boolean register(String userKey, String devname, String dev_id, String reg_id) {
 		JSONObject params = new JSONObject();
 
 		try {
 			params.put("reg_id", reg_id);
-			params.put("api_key", "");
+			params.put("user_key", userKey);
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());
 		}
@@ -45,7 +45,7 @@ public class Registrator {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		String serverUrl = prefs.getString(context.getString(R.string.setting_key_server_url), "");
 
-		return this.sendRequest(params, username, dev_id, serverUrl + "register/");
+		return this.sendRequest(params, devname, dev_id, serverUrl + "register");
 	}
 
 	boolean unregister(String username, String dev_id) {
@@ -54,12 +54,12 @@ public class Registrator {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		String serverUrl = prefs.getString(context.getString(R.string.server_url), "");
 
-		return this.sendRequest(params, username, dev_id, serverUrl + "unregister/");
+		return this.sendRequest(params, username, dev_id, serverUrl + "unregister");
 	}
 
-	private boolean sendRequest(JSONObject parameters, String username, String dev_id, String url) {
+	private boolean sendRequest(JSONObject parameters, String devname, String dev_id, String url) {
 		try {
-			parameters.put("username", username);
+			parameters.put("dev_name", devname);
 			parameters.put("dev_id", dev_id);
 		} catch (JSONException e) {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());

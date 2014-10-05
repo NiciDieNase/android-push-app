@@ -192,10 +192,11 @@ public class MainActivity extends Activity {
 			protected Object doInBackground(Object[] params) {
 				Log.d(TAG, "Register RegId = " + regid);
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-				String username = preferences.getString(getString(R.string.setting_key_username), "");
+				String devname = preferences.getString(getString(R.string.setting_key_devicename), "");
 				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+				String userKey = preferences.getString(getString(R.string.setting_key_user_key), "");
 
-				return new Registrator(context).register(username, devId, regid);
+				return new Registrator(context).register(userKey, devname, devId, regid);
 			}
 		}.execute();
 	}
@@ -207,10 +208,10 @@ public class MainActivity extends Activity {
 			protected Object doInBackground(Object[] params) {
 				Log.d(TAG, "Unregister RegId = " + regid);
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-				String username = preferences.getString(getString(R.string.setting_key_username), "");
+				String devname = preferences.getString(getString(R.string.setting_key_devicename), "");
 				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-				return new Registrator(context).unregister(username, devId);
+				return new Registrator(context).unregister(devname, devId);
 			}
 		}.execute();
 	}

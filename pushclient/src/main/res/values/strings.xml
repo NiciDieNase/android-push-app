@@ -3,8 +3,8 @@
 
     <string name="app_name">Push</string>
     <string name="action_settings">Settings</string>
-    <string name="username">Username</string>
-    <string name="api_key">API Key</string>
+    <string name="devicename">Devicename</string>
+    <string name="user_key">User Key</string>
     <string name="vibrate">Vibrate</string>
     <string name="play_sound">Play Sound</string>
     <string name="notify">Notify</string>
@@ -20,8 +20,8 @@
     <string name="settings_notification">Notification Settings</string>
     <string name="settings_api">API Settings</string>
     <string name="setting_key_server_url">server_url</string>
-    <string name="setting_key_username">username</string>
-    <string name="setting_key_api_key">api_key</string>
+    <string name="setting_key_devicename">devicename</string>
+    <string name="setting_key_user_key">user_key</string>
     <string name="setting_key_notify">notify</string>
     <string name="setting_key_sound">play_sound</string>
     <string name="setting_key_vibrate">vibrate</string>

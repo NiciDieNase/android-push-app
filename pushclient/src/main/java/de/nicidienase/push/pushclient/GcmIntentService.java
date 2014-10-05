@@ -32,6 +32,8 @@ public class GcmIntentService extends IntentService {
 
 		String messageType = gcm.getMessageType(intent);
 
+		int notificationID = 2342;
+
 		if (!extras.isEmpty()) {
 			if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
 				Log.d("Message_type_send_error");
@@ -65,7 +67,8 @@ public class GcmIntentService extends IntentService {
 								.setContentTitle(title)
 								.setContentText(msg)
 								.setAutoCancel(true)
-								.setContentIntent(pendingIntent);
+								.setContentIntent(pendingIntent)
+								.setNumber(5);
 						Notification noti = mBuilder.build();
 						if (sound) {
 							noti.defaults |= Notification.DEFAULT_SOUND;
@@ -75,8 +78,7 @@ public class GcmIntentService extends IntentService {
 						}
 						NotificationManager mNotificationManager =
 								(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-						int id = (int) System.currentTimeMillis();
-						mNotificationManager.notify(id, noti);
+						mNotificationManager.notify(notificationID, noti);
 					}
 				} else {
 					Log.i("empty Message");
