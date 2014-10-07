@@ -95,8 +95,11 @@ public class MainActivity extends Activity {
 			case R.id.action_add_item:
 				Notification n = new Notification();
 				n.title = "Bacon Ipsum";
-				n.message = getString(R.string.bacon_ipsum);
+				n.message = getString(R.string.bacon_ipsum).substring(0,80) + " [...]";
+				n.long_message = getString(R.string.bacon_ipsum);
 				n.received = new Date();
+				n.url = "http://google.com";
+				n.url_title ="google";
 				n.save();
 				notificationAdapter.notifyDataSetChanged();
 				break;

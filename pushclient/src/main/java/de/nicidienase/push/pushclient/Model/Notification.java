@@ -24,4 +24,12 @@ public class Notification extends Model {
 	public int priority = 0;
 	@Column
 	public Group group = new Group();
+	@Column
+	public String url;
+	@Column
+	public String url_title;
+	@Column
+	public String sound;
+	@Column
+	public String token;
 }
