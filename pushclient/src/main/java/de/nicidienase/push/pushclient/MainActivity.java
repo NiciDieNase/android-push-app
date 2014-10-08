@@ -1,7 +1,5 @@
 package de.nicidienase.push.pushclient;
 
-import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +25,7 @@ import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements NotificationListFragment.Callbacks{
 
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String PROPERTY_REG_ID = "reg_id";
@@ -37,7 +36,7 @@ public class MainActivity extends Activity {
 	private Context context = null;
 	private GoogleCloudMessaging gcm;
 	protected String regid;
-	private NotificationAdapter notificationAdapter;
+	private boolean mTwoPane;
 
 
 	@Override
@@ -47,15 +46,12 @@ public class MainActivity extends Activity {
 
 		context = getApplicationContext();
 
+		if (findViewById(R.id.notification_detail_container) != null) {
+			mTwoPane = true;
 
-		ListFragment listFragment = new ListFragment();
-
-		notificationAdapter = new NotificationAdapter(this);
-
-		listFragment.setListAdapter(notificationAdapter);
-		getFragmentManager().beginTransaction()
-				.replace(R.id.fragmentcontainer, listFragment)
-				.commit();
+			((NotificationListFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.notification_list)).setActivateOnItemClick(true);
+		}
 
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -95,13 +91,13 @@ public class MainActivity extends Activity {
 			case R.id.action_add_item:
 				Notification n = new Notification();
 				n.title = "Bacon Ipsum";
-				n.message = getString(R.string.bacon_ipsum).substring(0,80) + " [...]";
+				n.message = getString(R.string.bacon_ipsum).substring(0, 80) + " [...]";
 				n.long_message = getString(R.string.bacon_ipsum);
 				n.received = new Date();
 				n.url = "http://google.com";
-				n.url_title ="google";
+				n.url_title = "google";
 				n.save();
-				notificationAdapter.notifyDataSetChanged();
+//				notificationAdapter.notifyDataSetChanged();
 				break;
 			case R.id.action_reregister:
 				if (regid.isEmpty()) {
@@ -115,10 +111,10 @@ public class MainActivity extends Activity {
 				break;
 			case R.id.action_clear:
 				new Delete().from(Notification.class).execute();
-				notificationAdapter.notifyDataSetChanged();
+//				notificationAdapter.notifyDataSetChanged();
 				break;
 			case R.id.action_update:
-				notificationAdapter.notifyDataSetChanged();
+//				notificationAdapter.notifyDataSetChanged();
 				break;
 			default:
 				break;
@@ -246,5 +242,28 @@ public class MainActivity extends Activity {
 			throw new RuntimeException("Could not get package name: " + e);
 		}
 
+	}
+
+	@Override
+	public void onItemSelected(Notification notification) {
+		Notification selected = notification;
+		Bundle arguments = new Bundle();
+		arguments.putString("title", selected.title);
+		arguments.putString("long_message", selected.long_message);
+		arguments.putString("message", selected.message);
+		arguments.putString("url", selected.url);
+		arguments.putString("url_title", selected.url_title);
+		arguments.putString("date",selected.received.toString());
+		if(mTwoPane){
+
+			NotificationDetailsFragment fragment = new NotificationDetailsFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.notification_detail_container, fragment, "details").commit();
+		} else {
+			Intent detailIntent = new Intent(this, NotificationDetailActivity.class);
+			detailIntent.putExtra("arguments",arguments);
+			startActivity(detailIntent);
+		}
 	}
 }

@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".NotificationDetailActivity" />
+
         <receiver
             android:name="de.nicidienase.push.pushclient.GcmBroadcastReveiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -38,6 +40,10 @@
 
         <service android:name="de.nicidienase.push.pushclient.GcmIntentService" />
 
+        <provider
+            android:authorities="de.nicidienase.push.pushclient"
+            android:name="com.activeandroid.content.ContentProvider"
+            android:exported="false"/>
         <activity
             android:name="de.nicidienase.push.pushclient.SettingsActivity"
             android:label="@string/title_activity_settings" >

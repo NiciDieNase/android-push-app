@@ -31,10 +31,9 @@ public class NotificationAdapter extends BaseAdapter {
 	@Override
 	public void notifyDataSetChanged() {
 		super.notifyDataSetChanged();
-		updateNotifications();
 	}
 
-	private void updateNotifications() {
+	public void updateNotifications() {
 		new AsyncTask() {
 			@Override
 			protected Object doInBackground(Object[] params) {
@@ -77,7 +76,7 @@ public class NotificationAdapter extends BaseAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.notification_list_item, null);
 		}
-		title = (TextView) convertView.findViewById(R.id.titleText);
+		title = (TextView) convertView.findViewById(R.id.title_view);
 		message = (TextView) convertView.findViewById(R.id.messageText);
 		date = (TextView) convertView.findViewById(R.id.dateText);
 
