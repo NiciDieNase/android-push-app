@@ -75,7 +75,7 @@ public class GcmIntentService extends IntentService {
 
 					// Start builing notification
 					if (notify) {
-						Intent i = new Intent(this, MainActivity.class);
+						Intent i = new Intent(this, NotificationListActivity.class);
 						TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 						stackBuilder.addNextIntent(i);
 						PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

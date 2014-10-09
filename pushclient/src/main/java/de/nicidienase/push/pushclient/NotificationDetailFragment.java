@@ -1,17 +1,20 @@
 package de.nicidienase.push.pushclient;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
  * Created by felix on 08/10/14.
  */
-public class NotificationDetailsFragment extends Fragment{
+public class NotificationDetailFragment extends Fragment{
 
 	private String title = "";
 	private String message = "";
@@ -56,7 +59,23 @@ public class NotificationDetailsFragment extends Fragment{
 		} else {
 			msg = long_message;
 		}
-		((TextView)rootView.findViewById(R.id.message_view)).setText(msg);
+		if(!url.isEmpty()){
+			Button linkButton = (Button) rootView.findViewById(R.id.link_button);
+			linkButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent openUrl = new Intent();
+					openUrl.setAction(Intent.ACTION_VIEW);
+					openUrl.setData(Uri.parse(url));
+					startActivity(openUrl);
+				}
+			});
+			if(url_title.isEmpty()){
+				linkButton.setText(url);
+			} else {
+				linkButton.setText(url_title);
+			}
+		}
 		return rootView;
 	}
 }

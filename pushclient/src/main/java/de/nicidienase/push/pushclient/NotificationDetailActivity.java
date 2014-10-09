@@ -20,7 +20,7 @@ public class NotificationDetailActivity extends FragmentActivity{
 
 		if(getIntent().getExtras().containsKey("arguments")){
 			Bundle arguments = getIntent().getBundleExtra("arguments");
-			NotificationDetailsFragment fragment = new NotificationDetailsFragment();
+			NotificationDetailFragment fragment = new NotificationDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.notification_detail_container,fragment)
@@ -33,7 +33,7 @@ public class NotificationDetailActivity extends FragmentActivity{
 		int id = item.getItemId();
 
 		if(id == android.R.id.home){
-			NavUtils.navigateUpTo(this,new Intent(this, MainActivity.class));
+			NavUtils.navigateUpTo(this,new Intent(this, NotificationListActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

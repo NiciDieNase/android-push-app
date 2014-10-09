@@ -5,13 +5,16 @@
         android:title="@string/settings_api">
         <EditTextPreference
             android:key="@string/setting_key_server_url"
-            android:title="@string/server_url"/>
+            android:title="@string/server_url"
+            android:inputType="textUri"
+            android:text="https://nicidienase.appspot.com/"/>
         <EditTextPreference
             android:key="@string/setting_key_user_key"
             android:title="@string/user_key"/>
         <EditTextPreference
             android:key="@string/setting_key_devicename"
-            android:title="@string/devicename"/>
+            android:title="@string/devicename"
+            android:inputType="text"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_notification">

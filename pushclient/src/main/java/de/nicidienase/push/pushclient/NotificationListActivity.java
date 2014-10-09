@@ -25,7 +25,7 @@ import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
 
-public class MainActivity extends FragmentActivity implements NotificationListFragment.Callbacks{
+public class NotificationListActivity extends FragmentActivity implements NotificationListFragment.Callbacks{
 
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String PROPERTY_REG_ID = "reg_id";
@@ -97,7 +97,6 @@ public class MainActivity extends FragmentActivity implements NotificationListFr
 				n.url = "http://google.com";
 				n.url_title = "google";
 				n.save();
-//				notificationAdapter.notifyDataSetChanged();
 				break;
 			case R.id.action_reregister:
 				if (regid.isEmpty()) {
@@ -111,10 +110,10 @@ public class MainActivity extends FragmentActivity implements NotificationListFr
 				break;
 			case R.id.action_clear:
 				new Delete().from(Notification.class).execute();
-//				notificationAdapter.notifyDataSetChanged();
 				break;
 			case R.id.action_update:
-//				notificationAdapter.notifyDataSetChanged();
+				((NotificationListFragment)getSupportFragmentManager()
+						.findFragmentById(R.id.notification_list)).updateCursor();
 				break;
 			default:
 				break;
@@ -160,7 +159,7 @@ public class MainActivity extends FragmentActivity implements NotificationListFr
 	private SharedPreferences getGCMPreferences(Context context) {
 		// This sample app persists the registration ID in shared preferences, but
 		// how you store the regID in your app is up to you.
-		return getSharedPreferences(MainActivity.class.getSimpleName(),
+		return getSharedPreferences(NotificationListActivity.class.getSimpleName(),
 				Context.MODE_PRIVATE);
 	}
 
@@ -256,7 +255,7 @@ public class MainActivity extends FragmentActivity implements NotificationListFr
 		arguments.putString("date",selected.received.toString());
 		if(mTwoPane){
 
-			NotificationDetailsFragment fragment = new NotificationDetailsFragment();
+			NotificationDetailFragment fragment = new NotificationDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.notification_detail_container, fragment, "details").commit();

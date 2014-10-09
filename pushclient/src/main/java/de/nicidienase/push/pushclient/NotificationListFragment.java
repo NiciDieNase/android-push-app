@@ -35,14 +35,19 @@ public class NotificationListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		setListAdapter(new NotificationAdapter(this.getActivity()));
-		setListAdapter(new NotificationCursorAdapter(getActivity()));
+		NotificationCursorAdapter cursorAdapter = new NotificationCursorAdapter(getActivity());
+
+		setListAdapter(cursorAdapter);
+		updateCursor();
+	}
+
+	public void updateCursor() {
 		getActivity().getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
 			@Override
 			public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
 				return new CursorLoader(getActivity(),
 						ContentProvider.createUri(Notification.class, null),
-						null, null, null, null
+						null, null, null, "received DESC"
 				);
 			}
 

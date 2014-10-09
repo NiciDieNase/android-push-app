@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView">
+        android:layout_height="500dp"
+        android:id="@+id/scrollView"
+        android:focusableInTouchMode="true">
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -15,7 +17,8 @@
                 android:text="Title"
                 android:id="@+id/title_view"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_alignLeft="@+id/message_view"
+                android:layout_alignStart="@+id/message_view"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,5 +43,16 @@
                 android:paddingRight="20dp"
                 android:paddingLeft="20dp"
                 android:layout_margin="5dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="no Link"
+                android:id="@+id/link_button"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/message_view"
+                android:clickable="false"/>
+
         </RelativeLayout>
     </ScrollView>

@@ -37,4 +37,5 @@
         android:layout_below="@+id/title_view"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>
