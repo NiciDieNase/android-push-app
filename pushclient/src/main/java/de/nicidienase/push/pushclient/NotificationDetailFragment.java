@@ -59,6 +59,7 @@ public class NotificationDetailFragment extends Fragment{
 		} else {
 			msg = long_message;
 		}
+		((TextView)rootView.findViewById(R.id.message_view)).setText((msg));
 		if(!url.isEmpty()){
 			Button linkButton = (Button) rootView.findViewById(R.id.link_button);
 			linkButton.setOnClickListener(new View.OnClickListener() {

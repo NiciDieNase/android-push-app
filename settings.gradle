@@ -1,1 +1,1 @@
-include ':pushclient', ':push4wear'
+include ':pushclient', ':wear'

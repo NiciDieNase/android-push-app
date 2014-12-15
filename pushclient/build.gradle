@@ -12,15 +12,21 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }
 
+repositories {
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile 'com.activeandroid.activeandroid:+'
     compile 'com.android.support:support-v4:20.0.+'
     compile 'com.google.android.gms:play-services:+'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
 }
