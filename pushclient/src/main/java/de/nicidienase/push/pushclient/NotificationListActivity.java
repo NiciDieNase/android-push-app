@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,47 +35,47 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 	private static final String PROPERTY_APP_VERSION = "0.1";
 	private static final String SENDER_ID = "160575761640";
 
-	private Context context = null;
 	private GoogleCloudMessaging gcm;
 	protected String regid;
 	private boolean mTwoPane;
 
+	private RecyclerView mRecyclerView;
+	private RecyclerView.Adapter mAdapter;
+	private RecyclerView.LayoutManager mLayoutManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		context = getApplicationContext();
+		mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		mRecyclerView.setHasFixedSize(true);
+		mLayoutManager = new LinearLayoutManager(this);
+		mRecyclerView.setLayoutManager(mLayoutManager);
+//		mAdapter = new RecycleCursorAdapter(this);
+		mAdapter = new MyAdapter(new String[]{"foo", "bar", "baz", "eggs", "bacon", "spam"});
+		mRecyclerView.setAdapter(mAdapter);
 
-		if (findViewById(R.id.notification_detail_container) != null) {
-			mTwoPane = true;
-
-			((NotificationListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.notification_list)).setActivateOnItemClick(true);
-		}
-
+		// Load Settings
 		PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String server = prefs.getString(context.getString(R.string.setting_key_server_url), "");
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		String server = prefs.getString(this.getString(R.string.setting_key_server_url), "https://nicidienase.appspot.com/");
 		if (server.equals("")) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-			Toast.makeText(context, "Server not set", Toast.LENGTH_SHORT);
+			Toast.makeText(this, "Server not set", Toast.LENGTH_SHORT);
 			startActivityForResult(i, 1);
 		}
 
+		// handle PlayServices-Connections
 		if (checkPlayServices()) {
 			gcm = GoogleCloudMessaging.getInstance(this);
-			regid = getRegistrationId(context);
-
+			regid = getRegistrationId(this);
 			if (regid.isEmpty()) {
 				registerInBackground();
 			}
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 		}
-
-
 	}
 
 	@Override
@@ -114,8 +116,8 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 				new Delete().from(Notification.class).execute();
 				break;
 			case R.id.action_update:
-				((NotificationListFragment)getSupportFragmentManager()
-						.findFragmentById(R.id.notification_list)).updateCursor();
+//				((NotificationListFragment)getSupportFragmentManager()
+//						.findFragmentById(R.id.notification_list)).updateCursor();
 				break;
 			default:
 				break;
@@ -172,10 +174,10 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 				String msg = "";
 				try {
 					if (gcm == null) {
-						gcm = GoogleCloudMessaging.getInstance(context);
+						gcm = GoogleCloudMessaging.getInstance(NotificationListActivity.this);
 					}
 					regid = gcm.register(SENDER_ID);
-					storeRegistrationId(context, regid);
+					storeRegistrationId(NotificationListActivity.this, regid);
 					sendRegistrationIdToBackend();
 				} catch (IOException e) {
 					msg = "Error: " + e.getMessage();
@@ -191,12 +193,12 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 			@Override
 			protected Object doInBackground(Object[] params) {
 				Log.d(TAG, "Register RegId = " + regid);
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NotificationListActivity.this);
 				String devname = preferences.getString(getString(R.string.setting_key_devicename), "");
-				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+				String devId = Settings.Secure.getString(NotificationListActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
 				String userKey = preferences.getString(getString(R.string.setting_key_user_key), "");
 
-				return new Registrator(context).register(userKey, devname, devId, regid);
+				return new Registrator(NotificationListActivity.this).register(userKey, devname, devId, regid);
 			}
 		}.execute();
 	}
@@ -207,11 +209,11 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 			@Override
 			protected Object doInBackground(Object[] params) {
 				Log.d(TAG, "Unregister RegId = " + regid);
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NotificationListActivity.this);
 				String devname = preferences.getString(getString(R.string.setting_key_devicename), "");
-				String devId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+				String devId = Settings.Secure.getString(NotificationListActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-				return new Registrator(context).unregister(devname, devId);
+				return new Registrator(NotificationListActivity.this).unregister(devname, devId);
 			}
 		}.execute();
 	}
