@@ -72,6 +72,8 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 		}
+
+
 	}
 
 	@Override
