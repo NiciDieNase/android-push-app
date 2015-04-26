@@ -2,16 +2,16 @@ package de.nicidienase.push.pushclient;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.activeandroid.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -81,8 +81,8 @@ public class GcmIntentService extends IntentService {
 						PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
 						// WEAR set sender-specific background
-						NotificationCompat.WearableExtender wearableExtender =
-								new NotificationCompat.WearableExtender();
+						Notification.WearableExtender wearableExtender =
+								new Notification.WearableExtender();
 						if (notification.token.equals("weechat")) {
 							wearableExtender
 									.setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.weechat))
@@ -90,7 +90,7 @@ public class GcmIntentService extends IntentService {
 						}
 
 						// General Notification Settings
-						NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+						Notification.Builder mBuilder = new Notification.Builder(this)
 								.setSmallIcon(android.R.drawable.sym_action_email)
 								.setContentTitle(notification.title)
 								.setContentText(notification.message)
@@ -111,10 +111,10 @@ public class GcmIntentService extends IntentService {
 						Notification noti = null;
 						// WEAR add full text to second page if shortend
 						if(!notification.long_message.isEmpty()){
-							NotificationCompat.BigTextStyle secondPageStyle = new NotificationCompat.BigTextStyle();
+							Notification.BigTextStyle secondPageStyle = new Notification.BigTextStyle();
 							secondPageStyle.bigText(notification.long_message);
 
-							Notification secondPage = new NotificationCompat.Builder(this)
+							Notification secondPage = new Notification.Builder(this)
 									.setStyle(secondPageStyle)
 									.build();
 
@@ -135,8 +135,8 @@ public class GcmIntentService extends IntentService {
 						}
 
 						// Send Notification
-						NotificationManagerCompat mNotificationManager =
-								NotificationManagerCompat.from(this);
+						NotificationManager mNotificationManager =
+								(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 						mNotificationManager.notify(NOTIFICATION_ID, noti);
 					}
 				} else {

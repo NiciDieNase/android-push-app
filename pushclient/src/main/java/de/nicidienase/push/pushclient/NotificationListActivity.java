@@ -1,7 +1,11 @@
 package de.nicidienase.push.pushclient;
 
+import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +32,7 @@ import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
 
-public class NotificationListActivity extends ActionBarActivity implements NotificationListFragment.Callbacks{
+public class NotificationListActivity extends Activity {
 
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String PROPERTY_REG_ID = "reg_id";
@@ -271,47 +274,25 @@ public class NotificationListActivity extends ActionBarActivity implements Notif
 
 	}
 
-	@Override
-	public void onItemSelected(Notification notification) {
-		Notification selected = notification;
-		Bundle arguments = new Bundle();
-		arguments.putString("title", selected.title);
-		arguments.putString("long_message", selected.long_message);
-		arguments.putString("message", selected.message);
-		arguments.putString("url", selected.url);
-		arguments.putString("url_title", selected.url_title);
-		arguments.putString("date",selected.received.toString());
-		if(mTwoPane){
-
-			NotificationDetailFragment fragment = new NotificationDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.notification_detail_container, fragment, "details").commit();
-		} else {
-			Intent detailIntent = new Intent(this, NotificationDetailActivity.class);
-			detailIntent.putExtra("arguments",arguments);
-			startActivity(detailIntent);
-		}
-	}
-
 	public void initLoader() {
-		getSupportLoaderManager().initLoader(0, null, new android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>() {
+		LoaderManager lm= getLoaderManager();
+		lm.initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
 			@Override
-			public android.support.v4.content.Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
-				return new android.support.v4.content.CursorLoader(NotificationListActivity.this,
+			public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
+				return new CursorLoader(NotificationListActivity.this,
 						ContentProvider.createUri(Notification.class, null),
 						null, null, null, "received DESC"
 				);
 			}
 
 			@Override
-			public void onLoadFinished(android.support.v4.content.Loader<Cursor> arg0, Cursor cursor) {
-				((NotificationRecyclerAdapter)mAdapter).swapCursor(cursor);
+			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				((NotificationRecyclerAdapter) mAdapter).swapCursor(data);
 			}
 
 			@Override
-			public void onLoaderReset(android.support.v4.content.Loader<Cursor> arg0) {
-				((NotificationRecyclerAdapter)mAdapter).swapCursor(null);
+			public void onLoaderReset(Loader<Cursor> loader) {
+				((NotificationRecyclerAdapter) mAdapter).swapCursor(null);
 			}
 		});
 	}
