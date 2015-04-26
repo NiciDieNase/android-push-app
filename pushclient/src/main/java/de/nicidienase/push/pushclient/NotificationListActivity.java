@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.Delete;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -27,7 +29,7 @@ import java.util.Date;
 
 import de.nicidienase.push.pushclient.Model.Notification;
 
-public class NotificationListActivity extends FragmentActivity implements NotificationListFragment.Callbacks{
+public class NotificationListActivity extends ActionBarActivity implements NotificationListFragment.Callbacks{
 
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String PROPERTY_REG_ID = "reg_id";
@@ -52,8 +54,10 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(this);
 		mRecyclerView.setLayoutManager(mLayoutManager);
-//		mAdapter = new RecycleCursorAdapter(this);
-		mAdapter = new MyAdapter(new String[]{"foo", "bar", "baz", "eggs", "bacon", "spam"});
+//		mAdapter = new NotificationAdapter();
+		mAdapter = new NotificationRecyclerAdapter(this,null);
+//		mAdapter = new MyAdapter(new String[]{"foo", "bar", "baz", "eggs", "bacon", "spam"});
+		initLoader();
 		mRecyclerView.setAdapter(mAdapter);
 
 		// Load Settings
@@ -76,6 +80,26 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 		} else {
 			Log.i(TAG, "No valid Google Play Services APK found.");
 		}
+
+//		mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//			int mLastFirstVisibleItem = 0;
+//
+//			@Override
+//			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//			}
+//
+//			@Override
+//			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//				super.onScrolled(recyclerView,dx,dy);
+//				final int currentFirstVisibleItem = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
+//				if (currentFirstVisibleItem > this.mLastFirstVisibleItem){
+//					NotificationListActivity.this.getSupportActionBar().hide();
+//				} else {
+//					NotificationListActivity.this.getSupportActionBar().show();
+//				}
+//				this.mLastFirstVisibleItem = currentFirstVisibleItem;
+//			}
+//		});
 	}
 
 	@Override
@@ -117,7 +141,7 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 				break;
 			case R.id.action_update:
 //				((NotificationListFragment)getSupportFragmentManager()
-//						.findFragmentById(R.id.notification_list)).updateCursor();
+//						.findFragmentById(R.id.notification_list)).initLoader();
 				break;
 			default:
 				break;
@@ -268,5 +292,27 @@ public class NotificationListActivity extends FragmentActivity implements Notifi
 			detailIntent.putExtra("arguments",arguments);
 			startActivity(detailIntent);
 		}
+	}
+
+	public void initLoader() {
+		getSupportLoaderManager().initLoader(0, null, new android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>() {
+			@Override
+			public android.support.v4.content.Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
+				return new android.support.v4.content.CursorLoader(NotificationListActivity.this,
+						ContentProvider.createUri(Notification.class, null),
+						null, null, null, "received DESC"
+				);
+			}
+
+			@Override
+			public void onLoadFinished(android.support.v4.content.Loader<Cursor> arg0, Cursor cursor) {
+				((NotificationRecyclerAdapter)mAdapter).swapCursor(cursor);
+			}
+
+			@Override
+			public void onLoaderReset(android.support.v4.content.Loader<Cursor> arg0) {
+				((NotificationRecyclerAdapter)mAdapter).swapCursor(null);
+			}
+		});
 	}
 }
