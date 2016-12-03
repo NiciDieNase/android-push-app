@@ -5,19 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by felix on 27.04.14.
@@ -65,37 +59,30 @@ public class Registrator {
 			Log.e(LOG_TAG, "JSONexception: " + e.getMessage());
 		}
 
-		HttpPost request = new HttpPost(url);
-		StringEntity entity;
+		HttpURLConnection connection;
 		try {
-			entity = new StringEntity(parameters.toString(), HTTP.UTF_8);
-			entity.setContentType("application/json");
-			request.setEntity(entity);
-		} catch (UnsupportedEncodingException e) {
-			Log.e(LOG_TAG, "UnsupportedEncodingException: " + e);
+			connection = (HttpURLConnection) new URL(url).openConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
 			return false;
 		}
-
-		HttpClient client = new DefaultHttpClient();
 		try {
+			connection.setDoOutput(true);
+			connection.setChunkedStreamingMode(0);
+			connection.addRequestProperty("Content-Type","application/json");
+			connection.setRequestMethod("POST");
 
-			HttpResponse httpResponse = client.execute(request);
-			Integer responseCode = httpResponse.getStatusLine().getStatusCode();
-			String responseMessage = httpResponse.getStatusLine().getReasonPhrase();
+			OutputStream outputStream = connection.getOutputStream();
+			outputStream.write(parameters.toString().getBytes());
 
+			int responseCode = connection.getResponseCode();
 			Log.d(LOG_TAG, "Response code: " + responseCode);
-			Log.d(LOG_TAG, "Response message: " + responseMessage);
-
-			return responseCode == HttpStatus.SC_OK;
-
-		} catch (ClientProtocolException e) {
-			client.getConnectionManager().shutdown();
-			Log.e(LOG_TAG, "ClientProtocolException: " + e);
+			Log.d(LOG_TAG, "Response message: " + connection.getResponseMessage());
+			return responseCode == HttpURLConnection.HTTP_OK;
 		} catch (IOException e) {
-			client.getConnectionManager().shutdown();
-			Log.e(LOG_TAG, "IOException: " + e);
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "Exception: " + e);
+			e.printStackTrace();
+		} finally {
+			connection.disconnect();
 		}
 		return false;
 
