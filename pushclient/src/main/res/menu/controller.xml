@@ -1,31 +1,32 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_update"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/refresh"
-        android:icon="@android:drawable/ic_popup_sync"/>
+        android:icon="@drawable/ic_cached_white_36dp"/>
 
     <item
         android:id="@+id/action_settings"
-        android:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="@string/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"/>
+        android:icon="@drawable/ic_settings_white_36dp"/>
 
     <item
         android:id="@+id/action_add_item"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/add_items"
-        android:icon="@android:drawable/ic_menu_add"/>
+        android:icon="@drawable/ic_add_white_36dp"/>
 
     <item
         android:id="@+id/action_reregister"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/reregister"/>
 
     <item
         android:id="@+id/action_clear"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/clear_list"
         android:icon="@android:drawable/ic_menu_delete"/>
 
